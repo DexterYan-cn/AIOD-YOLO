@@ -140,7 +140,7 @@ class TaskAlignedAssigner(nn.Module):
         overlaps[mask_gt] = bbox_iou(gt_boxes, pd_boxes, xywh=False, CIoU=True).squeeze(-1).clamp(0)
 
         cos_sim = torch.sigmoid(self.simi(bbox_scores, overlaps)).mean().item()
-        align_metric = bbox_scores.pow(2 * cos_sim) * overlaps.pow(12 * cos_sim)
+        align_metric = bbox_scores.pow(3 * cos_sim) * overlaps.pow(10 * cos_sim)
         return align_metric, overlaps
 
     def select_topk_candidates(self, metrics, largest=True, topk_mask=None):
